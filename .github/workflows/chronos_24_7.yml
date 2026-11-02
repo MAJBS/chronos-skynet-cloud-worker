@@ -1,0 +1,31 @@
+name: Chronos Skynet 24-7 Cloud Collector
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+
+concurrency:
+  group: chronos-skynet-singleton-collector
+  cancel-in-progress: false
+
+jobs:
+  collect_market_and_belnap_24_7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout Collector Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install -q numpy pandas pyarrow huggingface_hub
+
+      - name: Run 24/7 Collector & Sync to Hugging Face Vault (Maycol127/chronos-skynet-vault)
+        env:
+          MAX_JOB_SECONDS: '19200'
+        run: python cloud_runner_24_7.py

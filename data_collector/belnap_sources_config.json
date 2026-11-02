@@ -1,0 +1,223 @@
+{
+  "version": "3.2.0-zero-ratelimit-multi-cdn",
+  "optional_api_keys": {
+    "cryptopanic_auth_token": "",
+    "tree_of_alpha_api_key": ""
+  },
+  "tier1_fast_1m_apis": [
+    {
+      "source_id": "GNEWS_BTC_LIVE_1H",
+      "url": "https://news.google.com/rss/search?q=Bitcoin+OR+BTC+crypto+when:1h&hl=en-US&gl=US&ceid=US:en",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 60,
+      "prior_trust_weight": 2.15,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc"]
+    },
+    {
+      "source_id": "GNEWS_ETH_LIVE_1H",
+      "url": "https://news.google.com/rss/search?q=Ethereum+OR+ETH+crypto+when:1h&hl=en-US&gl=US&ceid=US:en",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 60,
+      "prior_trust_weight": 2.15,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["eth"]
+    },
+    {
+      "source_id": "GNEWS_SOL_LIVE_1H",
+      "url": "https://news.google.com/rss/search?q=Solana+OR+SOL+crypto+when:1h&hl=en-US&gl=US&ceid=US:en",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 60,
+      "prior_trust_weight": 2.15,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["sol"]
+    },
+    {
+      "source_id": "GNEWS_MACRO_EXCHANGES_1H",
+      "url": "https://news.google.com/rss/search?q=(Binance+OR+Coinbase+OR+SEC+OR+ETF+OR+hack+OR+exploit)+crypto+when:1h&hl=en-US&gl=US&ceid=US:en",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 75,
+      "prior_trust_weight": 2.35,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc", "eth", "sol"]
+    },
+    {
+      "source_id": "BINANCE_FUTURES_SENTIMENT_BTC",
+      "url": "https://fapi.binance.com/futures/data/takerlongshortRatio?symbol=BTCUSDT&period=5m&limit=2",
+      "parser_type": "BINANCE_TAKER_RATIO_JSON",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.40,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc"]
+    },
+    {
+      "source_id": "BINANCE_FUTURES_SENTIMENT_ETH",
+      "url": "https://fapi.binance.com/futures/data/takerlongshortRatio?symbol=ETHUSDT&period=5m&limit=2",
+      "parser_type": "BINANCE_TAKER_RATIO_JSON",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.40,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["eth"]
+    },
+    {
+      "source_id": "BINANCE_FUTURES_SENTIMENT_SOL",
+      "url": "https://fapi.binance.com/futures/data/takerlongshortRatio?symbol=SOLUSDT&period=5m&limit=2",
+      "parser_type": "BINANCE_TAKER_RATIO_JSON",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.40,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["sol"]
+    },
+    {
+      "source_id": "TREE_OF_ALPHA_MAIN_API",
+      "url": "https://news.treeofalpha.com/api/news?limit=25",
+      "parser_type": "TREE_OF_ALPHA_JSON",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.60,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc", "eth", "sol"]
+    },
+    {
+      "source_id": "BYBIT_V5_ANNOUNCEMENTS_API",
+      "url": "https://api.bybit.com/v5/announcements/index?locale=en-US&limit=15",
+      "parser_type": "BYBIT_V5_JSON",
+      "poll_interval_sec": 90,
+      "prior_trust_weight": 2.85,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc", "eth", "sol"]
+    },
+    {
+      "source_id": "BINANCE_CMS_ANNOUNCEMENTS_API",
+      "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/list/query?type=1&pageNo=1&pageSize=15",
+      "parser_type": "BINANCE_CMS_JSON",
+      "poll_interval_sec": 90,
+      "prior_trust_weight": 3.00,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc", "eth", "sol"]
+    },
+    {
+      "source_id": "OKX_V5_ANNOUNCEMENTS_API",
+      "url": "https://www.okx.com/api/v5/support/announcements?limit=15",
+      "parser_type": "OKX_V5_JSON",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.40,
+      "horizon_scope": ["1m", "60m"],
+      "asset_affinity": ["btc", "eth", "sol"]
+    }
+  ],
+  "x_accounts_syndication_api": {
+    "poll_batch_size_per_minute": 2,
+    "accounts": [
+      {"handle": "tier10k",          "source_id": "X_TIER10K",         "role": "MACRO_AND_CATALYST", "trust_weight": 2.80, "contrarian": false},
+      {"handle": "WatcherGuru",      "source_id": "X_WATCHERGURU",     "role": "MACRO_BREAKING",     "trust_weight": 2.20, "contrarian": false},
+      {"handle": "WalterBloomberg",  "source_id": "X_WALTERBLOOMBERG", "role": "MACRO_TERMINAL",     "trust_weight": 2.60, "contrarian": false},
+      {"handle": "lookonchain",      "source_id": "X_LOOKONCHAIN",     "role": "ONCHAIN_WHALES",     "trust_weight": 2.50, "contrarian": false},
+      {"handle": "arkham",           "source_id": "X_ARKHAM",          "role": "ONCHAIN_WHALES",     "trust_weight": 2.55, "contrarian": false},
+      {"handle": "whale_alert",      "source_id": "X_WHALE_ALERT",     "role": "ONCHAIN_FLOWS",      "trust_weight": 2.10, "contrarian": false},
+      {"handle": "spotonchain",      "source_id": "X_SPOTONCHAIN",     "role": "ONCHAIN_WHALES",     "trust_weight": 2.35, "contrarian": false},
+      {"handle": "zachxbt",          "source_id": "X_ZACHXBT",         "role": "SECURITY_EXPLOITS",  "trust_weight": 2.95, "contrarian": false},
+      {"handle": "EricBalchunas",    "source_id": "X_BALCHUNAS",       "role": "ETF_FLOWS_MACRO",    "trust_weight": 2.65, "contrarian": false},
+      {"handle": "JSeyff",           "source_id": "X_JSEYFF",          "role": "ETF_FLOWS_MACRO",    "trust_weight": 2.50, "contrarian": false},
+      {"handle": "EleanorTerrett",   "source_id": "X_TERRETT_SEC",     "role": "REGULATION_SEC",     "trust_weight": 2.45, "contrarian": false},
+      {"handle": "VitalikButerin",   "source_id": "X_VITALIK",         "role": "ETH_CORE_ALPHA",     "trust_weight": 2.60, "contrarian": false},
+      {"handle": "ethereumfndn",     "source_id": "X_ETH_FOUNDATION",  "role": "ETH_CORE_ALPHA",     "trust_weight": 2.70, "contrarian": false},
+      {"handle": "TimBeiko",         "source_id": "X_TIMBEIKO",        "role": "ETH_CORE_DEVS",      "trust_weight": 2.40, "contrarian": false},
+      {"handle": "base",             "source_id": "X_BASE_L2",         "role": "ETH_L2_ECOSYSTEM",   "trust_weight": 2.00, "contrarian": false},
+      {"handle": "arbitrum",         "source_id": "X_ARBITRUM",        "role": "ETH_L2_ECOSYSTEM",   "trust_weight": 1.95, "contrarian": false},
+      {"handle": "LidoFinance",      "source_id": "X_LIDO_STETH",      "role": "ETH_DEFI_LST",       "trust_weight": 2.10, "contrarian": false},
+      {"handle": "aeyakovenko",      "source_id": "X_TOLY_SOL",        "role": "SOL_CORE_ALPHA",     "trust_weight": 2.60, "contrarian": false},
+      {"handle": "solana",           "source_id": "X_SOLANA_MAIN",     "role": "SOL_CORE_ALPHA",     "trust_weight": 2.65, "contrarian": false},
+      {"handle": "anza_xyz",         "source_id": "X_ANZA_SOL",        "role": "SOL_VALIDATOR_DEV",  "trust_weight": 2.55, "contrarian": false},
+      {"handle": "jito_sol",         "source_id": "X_JITO_MEV",        "role": "SOL_DEFI_MEV",       "trust_weight": 2.30, "contrarian": false},
+      {"handle": "JupiterExchange",  "source_id": "X_JUPITER_DEX",     "role": "SOL_DEX_FLOW",       "trust_weight": 2.25, "contrarian": false},
+      {"handle": "SolanaStatus",     "source_id": "X_SOLANA_STATUS",   "role": "SOL_NETWORK_HEALTH", "trust_weight": 2.90, "contrarian": false},
+      {"handle": "DocumentingBTC",   "source_id": "X_DOC_BTC_RETAIL",  "role": "RETAIL_EUPHORIA",    "trust_weight": 0.90, "contrarian": true}
+    ]
+  },
+  "tier2_macro_60m_apis": [
+    {
+      "source_id": "REDDIT_CRYPTOCURRENCY",
+      "url": "https://www.reddit.com/r/CryptoCurrency/new.json?limit=20",
+      "parser_type": "REDDIT_JSON",
+      "poll_interval_sec": 180,
+      "prior_trust_weight": 1.15
+    },
+    {
+      "source_id": "REDDIT_BITCOIN",
+      "url": "https://www.reddit.com/r/Bitcoin/new.json?limit=15",
+      "parser_type": "REDDIT_JSON",
+      "poll_interval_sec": 180,
+      "prior_trust_weight": 1.20
+    },
+    {
+      "source_id": "REDDIT_ETHEREUM",
+      "url": "https://www.reddit.com/r/ethereum/new.json?limit=15",
+      "parser_type": "REDDIT_JSON",
+      "poll_interval_sec": 180,
+      "prior_trust_weight": 1.35
+    },
+    {
+      "source_id": "REDDIT_SOLANA",
+      "url": "https://www.reddit.com/r/solana/new.json?limit=15",
+      "parser_type": "REDDIT_JSON",
+      "poll_interval_sec": 180,
+      "prior_trust_weight": 1.35
+    },
+    {
+      "source_id": "CRYPTOPANIC_RSS_PUBLIC",
+      "url": "https://cryptopanic.com/news/rss/",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 90,
+      "prior_trust_weight": 1.85
+    },
+    {
+      "source_id": "COINDESK_RSS",
+      "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 90,
+      "prior_trust_weight": 2.00
+    },
+    {
+      "source_id": "COINTELEGRAPH_RSS",
+      "url": "https://cointelegraph.com/rss",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 90,
+      "prior_trust_weight": 1.75
+    },
+    {
+      "source_id": "DECRYPT_RSS",
+      "url": "https://decrypt.co/feed",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 1.70
+    },
+    {
+      "source_id": "THEBLOCK_RSS",
+      "url": "https://www.theblock.co/rss.xml",
+      "parser_type": "RSS_XML",
+      "poll_interval_sec": 120,
+      "prior_trust_weight": 2.20
+    },
+    {
+      "source_id": "DEFILLAMA_CHAINS_TVL_API",
+      "url": "https://api.llama.fi/v2/chains",
+      "parser_type": "DEFILLAMA_CHAINS_JSON",
+      "poll_interval_sec": 600,
+      "prior_trust_weight": 2.30
+    },
+    {
+      "source_id": "ALTERNATIVE_FEAR_GREED_API",
+      "url": "https://api.alternative.me/fng/?limit=1",
+      "parser_type": "FEAR_GREED_JSON",
+      "poll_interval_sec": 900,
+      "prior_trust_weight": 1.80
+    },
+    {
+      "source_id": "COINGECKO_TRENDING_API",
+      "url": "https://api.coingecko.com/api/v3/search/trending",
+      "parser_type": "COINGECKO_TRENDING_JSON",
+      "poll_interval_sec": 600,
+      "prior_trust_weight": 1.50
+    }
+  ]
+}
