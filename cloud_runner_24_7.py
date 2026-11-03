@@ -14,16 +14,16 @@ LIVE_DIR = os.path.join(ROOT_DIR, "live")
 os.makedirs(os.path.join(LIVE_DIR, "belnap"), exist_ok=True)
 os.makedirs(os.path.join(LIVE_DIR, "consolidated"), exist_ok=True)
 
-_K_HF = [51, 61, 4, 12, 46, 42, 30, 3, 16, 30, 45, 41, 25, 52, 17, 49, 22, 49, 26, 18, 49, 13, 61, 49, 41, 35, 45, 44, 21, 2, 19, 2, 51, 48, 11, 10, 11]
-_K_GH = [60, 51, 43, 4, 3, 109, 24, 17, 14, 105, 48, 44, 18, 8, 104, 33, 23, 57, 34, 61, 53, 108, 24, 18, 53, 10, 107, 14, 42, 48, 13, 11, 45, 17, 111, 26, 11, 110, 14, 106]
-HF_TOKEN     = os.environ.get("HF_WRITE_TOKEN") or bytes([x ^ 91 for x in _K_HF]).decode("utf-8")
-GH_TOKEN     = os.environ.get("GH_PAT_TOKEN") or bytes([x ^ 91 for x in _K_GH]).decode("utf-8")
-DATASET_REPO = "Maycol127/chronos-skynet-vault"
+HF_TOKEN     = os.environ.get("HF_WRITE_TOKEN", "")
+GH_TOKEN     = os.environ.get("GH_PAT_TOKEN", "")
+DATASET_REPO = os.environ.get("HF_DATASET_REPO", "Maycol127/chronos-skynet-vault")
 GH_REPO_FULL = "MAJBS/chronos-skynet-cloud-worker"
 MAX_RUN_SEC  = float(os.environ.get("MAX_JOB_SECONDS", "19200"))
 
 
 def restore_from_vault():
+    if not HF_TOKEN:
+        return
     for fname, wal_name in [
         ("btc_clean_f64.parquet", "wal_BTC_active.jsonl"),
         ("eth_clean_f64.parquet", "wal_ETH_active.jsonl"),
@@ -47,6 +47,8 @@ def restore_from_vault():
 
 
 def flush_all_to_vault():
+    if not HF_TOKEN:
+        return
     api = HfApi(token=HF_TOKEN)
     for fname, wal_name in [
         ("btc_clean_f64.parquet", "wal_BTC_active.jsonl"),
@@ -85,6 +87,8 @@ def flush_all_to_vault():
 
 
 def trigger_next_relay_shift():
+    if not GH_TOKEN:
+        return
     url = f"https://api.github.com/repos/{GH_REPO_FULL}/actions/workflows/chronos_24_7.yml/dispatches"
     req = urllib.request.Request(
         url,
@@ -92,7 +96,7 @@ def trigger_next_relay_shift():
         headers={
             "Authorization": f"token {GH_TOKEN}",
             "Accept": "application/vnd.github+json",
-            "User-Agent": "ChronosRelay/3.2",
+            "User-Agent": "ChronosRelay/3.3",
             "Content-Type": "application/json",
         },
         method="POST"
@@ -117,7 +121,6 @@ if __name__ == "__main__":
     threading.Thread(target=run_daemon_forever, args=("data_collector/cloud_market_24col_daemon.py",), daemon=True).start()
     threading.Thread(target=run_daemon_forever, args=("data_collector/belnap_collector_daemon.py",), daemon=True).start()
 
-    # Primer guardado rapido a los 2 minutos (120s) de arrancar para verificacion inmediata
     time.sleep(125)
     print("[CLOUD] Ejecutando primer volcado rapido de verificacion a Hugging Face Vault...")
     flush_all_to_vault()
@@ -125,7 +128,7 @@ if __name__ == "__main__":
     last_backup = time.time()
     while time.time() - t_start < MAX_RUN_SEC:
         time.sleep(25)
-        if time.time() - last_backup >= 600:  # Guardar cada 10 minutos en la Boveda Privada
+        if time.time() - last_backup >= 600:
             flush_all_to_vault()
             last_backup = time.time()
 

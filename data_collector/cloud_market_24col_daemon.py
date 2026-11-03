@@ -18,7 +18,7 @@ COIN_MAP = {
 
 
 def _get_json(url: str, timeout: int = 6):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 ChronosCloud/3.2"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 ChronosCloud/3.3"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read().decode("utf-8", errors="replace"))
 

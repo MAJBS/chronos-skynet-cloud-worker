@@ -27,5 +27,8 @@ jobs:
 
       - name: Run 24/7 Collector & Sync to Hugging Face Vault (Maycol127/chronos-skynet-vault)
         env:
+          HF_WRITE_TOKEN: ${{ secrets.HF_WRITE_TOKEN }}
+          GH_PAT_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          HF_DATASET_REPO: Maycol127/chronos-skynet-vault
           MAX_JOB_SECONDS: '19200'
         run: python cloud_runner_24_7.py
